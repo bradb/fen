@@ -8,6 +8,11 @@
 (def ^:private white-queenside-castle \Q)
 (def ^:private black-kingside-castle \k)
 (def ^:private black-queenside-castle \q)
+(def ^:private black-piece (set "rnbqkp"))
+(def ^:private white-piece (set "RNBQKP"))
+(def ^:private empty-squares-n (set "12345678"))
+(def ^:private empty-square \-)
+(def ^:private rank-separator #"/")
 
 (defn fen->map
   "Convert a FEN string into a board representation.
@@ -32,10 +37,27 @@
          halfmove-clock
          fullmove-number]
         (str/split fen #" ")
-        castling-opts (into #{} castling-availability)
-        allow-castle? (partial contains? castling-opts)]
 
-    {:fen/side-to-move (case active-colour
+        castling-opts (into #{} castling-availability)
+
+        allow-castle? (partial contains? castling-opts)
+
+        board (->> (str/split pieces rank-separator)
+                   (map (fn expand-rank [rank]
+                          (for [piece rank]
+                            (cond
+                              (white-piece piece) piece
+
+                              (black-piece piece) piece
+
+                              (empty-squares-n piece)
+                              (let [n (Character/digit piece 10)]
+                                (repeat n empty-square))
+
+                              :else (throw (str "unrecognised piece pattern: " piece))))))
+                   flatten)]
+    {:fen/board board
+     :fen/side-to-move (case active-colour
                          "w" :white
                          "b" :black
                          (throw (str "don't know how to parse active colour " active-colour)))

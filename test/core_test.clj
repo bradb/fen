@@ -13,6 +13,15 @@
                     en-passant-target-square
                     halfmove-clock
                     fullmove-number]} (fen/fen->map start-pos-fen)]
+    (is (= [\r \n \b \q \k \b \n \r
+            \p \p \p \p \p \p \p \p
+            \- \- \- \- \- \- \- \-
+            \- \- \- \- \- \- \- \-
+            \- \- \- \- \- \- \- \-
+            \- \- \- \- \- \- \- \-
+            \P \P \P \P \P \P \P \P
+            \R \N \B \Q \K \B \N \R]
+           board))
     (is (= :white side-to-move))
     (is (= 1 fullmove-number))
     (is (= 0 halfmove-clock))
@@ -33,6 +42,15 @@
                     en-passant-target-square
                     halfmove-clock
                     fullmove-number]} (fen/fen->map after-1-e4-fen)]
+    (is (= [\r \n \b \q \k \b \n \r
+            \p \p \p \p \p \p \p \p
+            \- \- \- \- \- \- \- \-
+            \- \- \- \- \- \- \- \-
+            \- \- \- \- \P \- \- \-
+            \- \- \- \- \- \- \- \-
+            \P \P \P \P \- \P \P \P
+            \R \N \B \Q \K \B \N \R]
+           board))
     (is (= :black side-to-move))
     (is (= 1 fullmove-number))
     (is (= 0 halfmove-clock))
@@ -54,6 +72,15 @@
                     en-passant-target-square
                     halfmove-clock
                     fullmove-number]} (fen/fen->map after-1-e4-c5-fen)]
+    (is (= [\r \n \b \q \k \b \n \r
+            \p \p \- \p \p \p \p \p
+            \- \- \- \- \- \- \- \-
+            \- \- \p \- \- \- \- \-
+            \- \- \- \- \P \- \- \-
+            \- \- \- \- \- \- \- \-
+            \P \P \P \P \- \P \P \P
+            \R \N \B \Q \K \B \N \R]
+           board))
     (is (= :white side-to-move))
     (is (= 2 fullmove-number))
     (is (= 0 halfmove-clock))
@@ -74,6 +101,15 @@
                     en-passant-target-square
                     halfmove-clock
                     fullmove-number]} (fen/fen->map after-1-e4-c5-2-Nf3-fen)]
+    (is (= [\r \n \b \q \k \b \n \r
+            \p \p \- \p \p \p \p \p
+            \- \- \- \- \- \- \- \-
+            \- \- \p \- \- \- \- \-
+            \- \- \- \- \P \- \- \-
+            \- \- \- \- \- \N \- \-
+            \P \P \P \P \- \P \P \P
+            \R \N \B \Q \K \B \- \R]
+           board))
     (is (= :black side-to-move))
     (is (= 2 fullmove-number))
     (is (= 1 halfmove-clock))
@@ -127,6 +163,15 @@
                     en-passant-target-square
                     halfmove-clock
                     fullmove-number]} (fen/fen->map fen)]
+    (is (= [\- \- \- \- \k \- \- \-
+            \- \- \- \- \- \- \- \-
+            \- \- \- \- \- \- \- \-
+            \- \- \- \- \- \- \- \-
+            \- \- \- \- \- \- \- \-
+            \- \- \- \- \- \- \- \-
+            \- \- \- \- \P \- \- \-
+            \- \- \- \- \K \- \- \-]
+           board))
     (is (false? allow-white-kingside-castle?))
     (is (false? allow-white-queenside-castle?))
     (is (false? allow-black-kingside-castle?))
