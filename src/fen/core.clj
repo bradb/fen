@@ -18,7 +18,7 @@
   :fen/side-to-move - :white or :black
   :fen/en-passant-targets - A coll of squares
   :fen/halfmove-clock - An integer
-  :fen/fullmove-counter - An integer"
+  :fen/fullmove-number - An integer"
   [fen]
   (let [[pieces
          active-colour
@@ -30,9 +30,8 @@
     {:fen/side-to-move (case active-colour
                          "w" :white
                          "b" :black
-                         (throw (str "don't know how to parse active colour " active-colour)))})
-
-  )
+                         (throw (str "don't know how to parse active colour " active-colour)))
+     :fen/fullmove-number (Integer/parseInt fullmove-number)}))
 
 (defn map->fen
   "Convert a board map into a FEN string.
