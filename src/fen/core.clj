@@ -21,14 +21,14 @@
   :fen/allow-black-kingside-castle? - A boolean
   :fen/allow-black-queenside-castle? - A boolean
   :fen/side-to-move - :white or :black
-  :fen/en-passant-targets - A coll of squares
+  :fen/en-passant-target-square - A coll of squares
   :fen/halfmove-clock - An integer
   :fen/fullmove-number - An integer"
   [fen]
   (let [[pieces
          active-colour
          castling-availability
-         en-passant-targets
+         en-passant-target-square
          halfmove-clock
          fullmove-number]
         (str/split fen #" ")
@@ -41,6 +41,9 @@
                          (throw (str "don't know how to parse active colour " active-colour)))
      :fen/fullmove-number (Integer/parseInt fullmove-number)
      :fen/halfmove-clock (Integer/parseInt halfmove-clock)
+     :fen/en-passant-target-square (if (= "-" en-passant-target-square)
+                                     nil
+                                     en-passant-target-square)
      :fen/allow-white-kingside-castle? (allow-castle? white-kingside-castle)
      :fen/allow-white-queenside-castle? (allow-castle? white-queenside-castle)
      :fen/allow-black-kingside-castle? (allow-castle? black-kingside-castle)
