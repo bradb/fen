@@ -4,6 +4,11 @@
 ;; todo
 ;; - add specs
 
+(def ^:private white-kingside-castle \K)
+(def ^:private white-queenside-castle \Q)
+(def ^:private black-kingside-castle \k)
+(def ^:private black-queenside-castle \q)
+
 (defn fen->map
   "Convert a FEN string into a board representation.
 
@@ -26,13 +31,20 @@
          en-passant-targets
          halfmove-clock
          fullmove-number]
-        (str/split fen #" ")]
+        (str/split fen #" ")
+        castling-opts (into #{} castling-availability)
+        allow-castle? (partial contains? castling-opts)]
+
     {:fen/side-to-move (case active-colour
                          "w" :white
                          "b" :black
                          (throw (str "don't know how to parse active colour " active-colour)))
      :fen/fullmove-number (Integer/parseInt fullmove-number)
-     :fen/halfmove-clock (Integer/parseInt halfmove-clock)}))
+     :fen/halfmove-clock (Integer/parseInt halfmove-clock)
+     :fen/allow-white-kingside-castle? (allow-castle? white-kingside-castle)
+     :fen/allow-white-queenside-castle? (allow-castle? white-queenside-castle)
+     :fen/allow-black-kingside-castle? (allow-castle? black-kingside-castle)
+     :fen/allow-black-queenside-castle? (allow-castle? black-queenside-castle)}))
 
 (defn map->fen
   "Convert a board map into a FEN string.
