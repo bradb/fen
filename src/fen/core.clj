@@ -31,7 +31,8 @@
                          "w" :white
                          "b" :black
                          (throw (str "don't know how to parse active colour " active-colour)))
-     :fen/fullmove-number (Integer/parseInt fullmove-number)}))
+     :fen/fullmove-number (Integer/parseInt fullmove-number)
+     :fen/halfmove-clock (Integer/parseInt halfmove-clock)}))
 
 (defn map->fen
   "Convert a board map into a FEN string.
