@@ -71,8 +71,35 @@
      :fen/allow-black-kingside-castle? (allow-castle? black-kingside-castle)
      :fen/allow-black-queenside-castle? (allow-castle? black-queenside-castle)}))
 
-(defn map->fen
-  "Convert a board map into a FEN string.
+(defn- empty-square?
+  [sq]
+  (= sq empty-square))
 
-  See `fen->board` for the format of the map."
-  [board])
+(defn map->fen
+  "Convert a FEN map into a FEN string.
+
+  See `fen->map` for the format of the map."
+  [fen-map]
+  (let [{:fen/keys [board
+                    side-to-move
+                    fullmove-number
+                    halfmove-clock
+                    en-passant-target-square
+                    allow-white-kingside-castle?
+                    allow-white-queenside-castle?
+                    allow-black-kingside-castle?
+                    allow-black-queenside-castle?]} fen-map
+
+        board->fen (fn [board]
+                     (let [fen-ranks
+                           (for [rank (partition 8 board)]
+                             (let [parts (partition-by empty-square? rank)]
+                               (reduce
+                                 (fn [fen-str [x & _ :as frag]]
+                                   (if (empty-square? x)
+                                     (str fen-str (count frag))
+                                     (str fen-str (str/join frag))))
+                                 ""
+                                 parts)))]
+                       (str/join "/" fen-ranks)))]
+    (board->fen board)))

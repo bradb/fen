@@ -31,6 +31,36 @@
     (is (true? allow-black-queenside-castle?))
     (is (nil? en-passant-target-square))))
 
+(comment
+  (partition 8 [\r \n \b \q \k \b \n \r
+                \p \p \p \p \p \p \p \p
+                \- \- \- \- \- \- \- \-
+                \- \- \- \- \- \- \- \-
+                \- \- \- \- \- \- \- \-
+                \- \- \- \- \- \- \- \-
+                \P \P \P \P \P \P \P \P
+                \R \N \B \Q \K \B \N \R]))
+
+(deftest start-position-map-to-fen-test
+  (let [m {:fen/board [\r \n \b \q \k \b \n \r
+                       \p \p \p \p \p \p \p \p
+                       \- \- \- \- \- \- \- \-
+                       \- \- \- \- \- \- \- \-
+                       \- \- \- \- \- \- \- \-
+                       \- \- \- \- \- \- \- \-
+                       \P \P \P \P \P \P \P \P
+                       \R \N \B \Q \K \B \N \R]
+           :fen/side-to-move :white
+           :fen/fullmove-number 1
+           :fen/halfmove-clock 0
+           :fen/allow-white-kingside-castle? true
+           :fen/allow-white-queenside-castle? true
+           :fen/allow-black-kingside-castle? true
+           :fen/allow-black-queenside-castle? true
+           :fen/en-passant-target-square nil}
+        expected "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"]
+    (is (= expected (fen/map->fen m)))))
+
 (deftest after-1-e4-fen-to-map-test
   (let [after-1-e4-fen "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
         {:fen/keys [board
