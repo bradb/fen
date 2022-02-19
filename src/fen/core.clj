@@ -1,5 +1,6 @@
 (ns fen.core
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [clojure.set :as set]))
 
 ;; todo
 ;; - add specs
@@ -13,6 +14,8 @@
 (def ^:private empty-squares-n (set "12345678"))
 (def ^:private empty-square \-)
 (def ^:private rank-separator #"/")
+(def ^:private colour->kw {"w" :white, "b" :black})
+(def ^:private kw->colour (set/map-invert colour->kw))
 
 (defn fen->map
   "Convert a FEN string into a board representation.
@@ -57,9 +60,8 @@
                               :else (throw (str "unrecognised piece pattern: " piece))))))
                    flatten)]
     {:fen/board board
-     :fen/side-to-move (case active-colour
-                         "w" :white
-                         "b" :black
+     :fen/side-to-move (if-let [c (colour->kw active-colour)]
+                         c
                          (throw (str "don't know how to parse active colour " active-colour)))
      :fen/fullmove-number (Integer/parseInt fullmove-number)
      :fen/halfmove-clock (Integer/parseInt halfmove-clock)
@@ -101,5 +103,26 @@
                                      (str fen-str (str/join frag))))
                                  ""
                                  parts)))]
-                       (str/join "/" fen-ranks)))]
-    (board->fen board)))
+                       (str/join "/" fen-ranks)))
+
+        active-colour (kw->colour side-to-move)
+        piece-placement (board->fen board)
+        castling-opts (->> [(when allow-white-kingside-castle?
+                              "K")
+                            (when allow-white-queenside-castle?
+                              "Q")
+                            (when allow-black-kingside-castle?
+                              "k")
+                            (when allow-black-queenside-castle?
+                                  "q")]
+                           (remove nil?))
+        ]
+    (format "%s %s %s %s %d %d"
+            piece-placement
+            active-colour
+            (if (empty? castling-opts)
+              \-
+              (str/join castling-opts))
+            (or en-passant-target-square empty-square)
+            (or halfmove-clock 0)
+            (or fullmove-number 0))))
