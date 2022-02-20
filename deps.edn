@@ -7,5 +7,5 @@
   :deploy {:extra-deps {slipset/deps-deploy {:mvn/version "RELEASE"}}
            :exec-fn deps-deploy.deps-deploy/deploy
            :exec-args {:installer :remote
-                       :sign-releases? true
+                       :sign-releases? false
                        :artifact "deps-deploy.jar"}}}}
