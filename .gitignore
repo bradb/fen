@@ -2,4 +2,5 @@
 .nrepl-port
 pom.xml
 pom.properties
+*.pom
 target/
