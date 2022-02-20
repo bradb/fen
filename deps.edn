@@ -2,10 +2,6 @@
  :deps {}
 
  :aliases
- {:build {:deps {io.github.clojure/tools.build {:git/tag "v0.7.7" :git/sha "1474ad6"}}
-          :ns-default build}
-  :deploy {:extra-deps {slipset/deps-deploy {:mvn/version "RELEASE"}}
-           :exec-fn deps-deploy.deps-deploy/deploy
-           :exec-args {:installer :remote
-                       :sign-releases? false
-                       :artifact "deps-deploy.jar"}}}}
+ {:build {:deps {io.github.clojure/tools.build {:git/tag "v0.7.7" :git/sha "1474ad6"}
+                 slipset/deps-deploy {:mvn/version "RELEASE"}}
+          :ns-default build}}}
