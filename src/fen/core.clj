@@ -29,7 +29,7 @@
   :fen/allow-black-kingside-castle? - A boolean
   :fen/allow-black-queenside-castle? - A boolean
   :fen/side-to-move - :white or :black
-  :fen/en-passant-target-square - A coll of squares
+  :fen/en-passant-target-square - A string (e.g. \"e3\")
   :fen/halfmove-clock - An integer
   :fen/fullmove-number - An integer"
   [fen]
