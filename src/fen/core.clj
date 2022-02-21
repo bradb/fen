@@ -2,9 +2,6 @@
   (:require [clojure.string :as str]
             [clojure.set :as set]))
 
-;; todo
-;; - add specs
-
 (def ^:private white-kingside-castle \K)
 (def ^:private white-queenside-castle \Q)
 (def ^:private black-kingside-castle \k)
@@ -105,8 +102,6 @@
                                  parts)))]
                        (str/join "/" fen-ranks)))
 
-        active-colour (kw->colour side-to-move)
-        piece-placement (board->fen board)
         castling-opts (->> [(when allow-white-kingside-castle?
                               "K")
                             (when allow-white-queenside-castle?
@@ -116,7 +111,9 @@
                             (when allow-black-queenside-castle?
                                   "q")]
                            (remove nil?))
-        ]
+
+        active-colour (kw->colour side-to-move)
+        piece-placement (board->fen board)]
     (format "%s %s %s %s %d %d"
             piece-placement
             active-colour
